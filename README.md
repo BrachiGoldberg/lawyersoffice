@@ -20,8 +20,8 @@
  - שליפת לקוח לפי מזהה           
  GET http://lawyer.co.il/costumers/1    
  
- - שליפת לקוח לפי שם
- GET http://lawyer.co.il/costumers/name  
+ - שליפת לקוח לפי שם משפחה
+ GET http://lawyer.co.il/costumers/byname/lastName  
  
  -  הוספת לקוח
  POST http://lawyer.co.il/costumers  
@@ -38,7 +38,7 @@
  GET http://lawyer.co.il/courtcase/1 
  
  - שליפת תיק לפי סוג תיק
- GET http://lawyer.co.il/courtcase/type 
+ GET http://lawyer.co.il/courtcase/courttype/type 
  
  - הוספת תיק
  POST http://lawyer.co.il/courtcase 
@@ -59,7 +59,7 @@ PUT http://lawyer.co.il/courtcase/1/status
  GET http://lawyer.co.il/incomes/1
  
  - שליפת הכנסה לפי תאריך
- GET http://lawyer.co.il/incomes/20.11.2023
+ GET http://lawyer.co.il/incomes/bydate/20.11.2023
  
  - הוספת הכנסה
  POST http://lawyer.co.il/incomes
