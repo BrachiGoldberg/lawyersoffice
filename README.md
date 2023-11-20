@@ -23,10 +23,10 @@
  - שליפת לקוח לפי שם
  GET http://lawyer.co.il/costumers/name  
  
--  הוספת לקוח
+ -  הוספת לקוח
  POST http://lawyer.co.il/costumers  
  
--  עדכון לקוח
+ -  עדכון לקוח
  PUT http://lawyer.co.il/costumers/1
 
 ## מיפוי תיק
@@ -34,40 +34,40 @@
  -   שליפת כל התיקים
  GET http://lawyer.co.il/courtcase
 
-- שליפת תיק לפי מזהה
+ - שליפת תיק לפי מזהה
  GET http://lawyer.co.il/courtcase/1 
  
--  שליפת תיק לפי סוג תיק
+ - שליפת תיק לפי סוג תיק
  GET http://lawyer.co.il/courtcase/type 
  
  - הוספת תיק
  POST http://lawyer.co.il/courtcase 
   
--   עדכון תיק
+ - עדכון תיק
  PUT http://lawyer.co.il/courtcase/1
   
-  -  עדכון סטטוס תיק (פעיל/ לא פעיל)
+ - עדכון סטטוס תיק (פעיל/ לא פעיל)
 PUT http://lawyer.co.il/courtcase/1/status
  
 
 ## מיפוי כספים - הכנסות
 
-- שליפת כל ההכנסות
+ - שליפת כל ההכנסות
  GET http://lawyer.co.il/incomes
  
-- שליפת הכנסה לפי מזהה
+ - שליפת הכנסה לפי מזהה
  GET http://lawyer.co.il/incomes/1
  
-- שליפת הכנסה לפי תאריך
+ - שליפת הכנסה לפי תאריך
  GET http://lawyer.co.il/incomes/20.11.2023
  
-- הוספת הכנסה
+ - הוספת הכנסה
  POST http://lawyer.co.il/incomes
 
-- עדכון הכנסה
+ - עדכון הכנסה
   PUT http://lawyer.co.il/incomes/1
 
-- מחיקת הכנסה
+ - מחיקת הכנסה
   DELETE http://lawyer.co.il/incomes/1
 
  
