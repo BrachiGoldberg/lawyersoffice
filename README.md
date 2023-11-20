@@ -1,5 +1,8 @@
 # lawyersoffice
 
+
+
+
 **
 
 # > ישויות
@@ -12,60 +15,60 @@
 ## מיפוי לקוח
 
  -  שליפת כל הלקוחות
- GET http://lowyer.co.il/costumers     
+ GET http://lawyer.co.il/costumers     
 
  - שליפת לקוח לפי מזהה           
- GET http://lowyer.co.il/costumers/1  
+ GET http://lawyer.co.il/costumers/1  
  
  - שליפת לקוח לפי שם
- GET http://lowyer.co.il/costumers/name  
+ GET http://lawyer.co.il/costumers/name  
  
 -  הוספת לקוח
- POST http://lowyer.co.il/costumers  
+ POST http://lawyer.co.il/costumers  
  
 -  עדכון לקוח
- PUT http://lowyer.co.il/costumers/1] 
+ PUT http://lawyer.co.il/costumers/1
 
 ## מיפוי תיק
 
  -   שליפת כל התיקים
- GET http://lowyer.co.il/courtcase
+ GET http://lawyer.co.il/courtcase
 
 - שליפת תיק לפי מזהה
- GET http://lowyer.co.il/courtcase/1 
+ GET http://lawyer.co.il/courtcase/1 
  
 -  שליפת תיק לפי סוג תיק
- GET http://lowyer.co.il/courtcase/type 
+ GET http://lawyer.co.il/courtcase/type 
  
  - הוספת תיק
- POST http://lowyer.co.il/courtcase 
+ POST http://lawyer.co.il/courtcase 
   
 -   עדכון תיק
- PUT http://lowyer.co.il/courtcase/1
+ PUT http://lawyer.co.il/courtcase/1
   
   -  עדכון סטטוס תיק (פעיל/ לא פעיל)
-PUT http://lowyer.co.il/courtcase/1/status
+PUT http://lawyer.co.il/courtcase/1/status
  
 
 ## מיפוי כספים - הכנסות
 
 - שליפת כל ההכנסות
- GET http://lowyer.co.il/incomes
+ GET http://lawyer.co.il/incomes
  
 - שליפת הכנסה לפי מזהה
- GET http://lowyer.co.il/incomes/1
+ GET http://lawyer.co.il/incomes/1
  
 - שליפת הכנסה לפי תאריך
- GET http://lowyer.co.il/incomes/20.11.2023
+ GET http://lawyer.co.il/incomes/20.11.2023
  
 - הוספת הכנסה
- POST http://lowyer.co.il/incomes
+ POST http://lawyer.co.il/incomes
 
 - עדכון הכנסה
-  PUT http://lowyer.co.il/incomes/1
+  PUT http://lawyer.co.il/incomes/1
 
 - מחיקת הכנסה
-  DELETE http://lowyer.co.il/incomes/1
+  DELETE http://lawyer.co.il/incomes/1
 
  
 
