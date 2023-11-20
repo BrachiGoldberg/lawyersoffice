@@ -18,7 +18,7 @@
  GET http://lawyer.co.il/costumers     
 
  - שליפת לקוח לפי מזהה           
- GET http://lawyer.co.il/costumers/1  
+ GET http://lawyer.co.il/costumers/1    
  
  - שליפת לקוח לפי שם
  GET http://lawyer.co.il/costumers/name  
