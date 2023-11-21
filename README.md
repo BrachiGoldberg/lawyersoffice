@@ -35,7 +35,7 @@
  GET http://lawyer.co.il/courtcase/1 
  
  - שליפת תיקים מתאריך מסוים
- GET http://lawyer.co.il/courtcase/?date=21/11/2023
+ GET http://lawyer.co.il/courtcase/date/?date=21/11/2023
  
  - הוספת תיק
  POST http://lawyer.co.il/courtcase 
