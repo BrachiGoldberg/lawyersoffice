@@ -9,14 +9,14 @@ namespace LowyersOffice.Controllers
     [ApiController]
     public class CourtCaseController : ControllerBase
     {
-
+        static int id = 1;
         static List<CourtCase> courtes;
         static CourtCaseController()
         {
             courtes = new List<CourtCase>();
             courtes.Add(new CourtCase()
             {
-                Code = 1,
+                Code = id++,
                 CourtType = CourtCaseType.TAXES,
                 Fees = 5000,
                 OpeningDate = new DateTime(2023, 11, 20),
@@ -26,7 +26,7 @@ namespace LowyersOffice.Controllers
             });
             courtes.Add(new CourtCase()
             {
-                Code = 2,
+                Code = id++,
                 CourtType = CourtCaseType.REALESTATE,
                 Fees = 3000,
                 OpeningDate = new DateTime(2023, 11, 17),
@@ -36,7 +36,7 @@ namespace LowyersOffice.Controllers
             });
             courtes.Add(new CourtCase()
             {
-                Code = 3,
+                Code = id++,
                 CourtType = CourtCaseType.TAXES,
                 Fees = 6000,
                 OpeningDate = new DateTime(2023, 10, 17),
@@ -46,7 +46,7 @@ namespace LowyersOffice.Controllers
             });
             courtes.Add(new CourtCase()
             {
-                Code = 4,
+                Code = id++,
                 CourtType = CourtCaseType.ADMINISTRATIVELAW,
                 Fees = 8000,
                 OpeningDate = new DateTime(2023, 8, 30),
@@ -60,21 +60,27 @@ namespace LowyersOffice.Controllers
         [HttpGet]
         public IEnumerable<CourtCase> Get()
         {
-            return courtes.ToList();
+            return courtes;
+        }
+
+
+ 
+        [HttpGet("date")]
+        public IEnumerable<CourtCase> Get(DateTime date )
+        {
+            return courtes.Where(c=>c.OpeningDate.CompareTo(date)>=0);
         }
 
         // GET api/<CourtCaseController>/5
         [HttpGet("{id}")]
-        public CourtCase Get(int id)
+        public ActionResult Get(int id)
         {
-            return courtes.Find(c => c.Code == id);
+            var court = courtes.Find(c => c.Code == id);
+            if(court == null)
+                return NotFound();
+            return Ok(court);
         }
 
-        [HttpGet("courttype/{type}")]
-        public IEnumerable<CourtCase> Get(CourtCaseType type)
-        {
-            return courtes.Where(c => c.CourtType == type);
-        }
 
         // POST api/<CourtCaseController>
         [HttpPost]
@@ -82,7 +88,7 @@ namespace LowyersOffice.Controllers
         {
             courtes.Add(new CourtCase()
             {
-                Code = courtes.Count + 1,
+                Code = id++,
                 CourtType = value.CourtType,
                 Fees = value.Fees,
                 OpeningDate = new DateTime(),
@@ -94,7 +100,7 @@ namespace LowyersOffice.Controllers
 
         // PUT api/<CourtCaseController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] CourtCase value)
+        public ActionResult Put(int id, [FromBody] CourtCase value)
         {
             var court = courtes.Find(c => c.Code == id);
             if (court != null)
@@ -103,17 +109,23 @@ namespace LowyersOffice.Controllers
                 court.Fees = value.Fees;
                 court.CourtCaseStatus = value.CourtCaseStatus;
                 court.CostumerStatusOnCourt = value.CostumerStatusOnCourt;
-                court.AmountToPay = value.Fees;
+                court.AmountToPay = value.AmountToPay;
+                return Ok();
             }
+            return NotFound();
         }
 
 
         [HttpPut("{id}/status")]
-        public void Put(int id, [FromBody] CourtStatus status)
+        public ActionResult Put(int id, [FromBody] CourtStatus status)
         {
             var found = courtes.Find(c => c.Code == id);
             if (found != null)
+            {
                 found.CourtCaseStatus = status;
+                return Ok();
+            }
+            return NotFound();
         }
     }
 }

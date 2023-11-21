@@ -9,16 +9,17 @@ namespace LowyersOffice.Controllers
     [ApiController]
     public class CostumerController : ControllerBase
     {
+        static int id = 1;
         static List<Costumer> costumers;
         static CostumerController()
         {
             costumers = new List<Costumer>();
-            costumers.Add(new Costumer(1, "Brachi", "Goldberg", "birinboim", "0583276404", "brachig404@gmail.com", "0552783660"));
-            costumers.Add(new Costumer(2, "Elchanan", "Catz", "Yeoshoa", "0527620838", "ec1234@gmail.com", "0583184640"));
-            costumers.Add(new Costumer(3, "Moshe", "Mintch", "Cahaneman", "03-6776402", "moshe100200@gmail.com", "0526777214"));
-            costumers.Add(new Costumer(4, "Avital", "Grinblat", "DameskeEliezer", "0533148998", "grina@gmail.com", "0544685330"));
-            costumers.Add(new Costumer(5, "Israsel", "Cohen", "pardo", "0556488412", "i1c2@gmail.com", "0556488412"));
-            costumers.Add(new Costumer(6, "Zipora", "Levi", "BenGurion", "03-6545512", "zipi@gmail.com", "03-6545512"));
+            costumers.Add(new Costumer(){Id=id++, FirstName="Brachi",    LastName="Goldberg", Address="birinboim",      PhoneNumber="0583276404", Email="brachig404@gmail.com",  Whatsapp="0552783660"});
+            costumers.Add(new Costumer(){Id=id++, FirstName="Elchanan" , LastName="Catz",     Address="Yeoshoa",        PhoneNumber="0527620838", Email="ec1234@gmail.com",      Whatsapp="0583184640"});
+            costumers.Add(new Costumer(){Id=id++, FirstName="Moshe",     LastName="Mintch",   Address="Cahaneman",      PhoneNumber="03-6776402", Email="moshe100200@gmail.com", Whatsapp="0526777214"});
+            costumers.Add(new Costumer(){Id=id++, FirstName="Avital",    LastName="Grinblat", Address="DameskeEliezer", PhoneNumber="0533148998", Email="grina@gmail.com",       Whatsapp="0544685330"});
+            costumers.Add(new Costumer(){Id=id++, FirstName="Israsel",   LastName="Cohen",    Address="pardo",          PhoneNumber="0556488412", Email="i1c2@gmail.com",        Whatsapp="0556488412"});
+            costumers.Add(new Costumer(){Id=id++, FirstName = "Zipora", LastName = "Levi", Address = "BenGurion", PhoneNumber = "03-6545512", Email = "zipi@gmail.com", Whatsapp = "03-6545512" });
         }
         // GET: api/<CostumerController>
         [HttpGet]
@@ -29,28 +30,35 @@ namespace LowyersOffice.Controllers
 
         // GET api/<CostumerController>/5
         [HttpGet("{id}")]
-        public Costumer Get(int id)
+        public ActionResult Get(int id)
         {
-            return costumers.Find(c => c.Id == id);
+            var c= costumers.Find(c => c.Id == id);
+            if (c==null)
+                return NotFound();
+            return Ok(c);
         }
 
-        [HttpGet("byname/{lastName}")]
-        public IEnumerable<Costumer> Get(string lastName)
-        {
-            return costumers.Where(c => c.LastName == lastName);
-        }
+        
 
         // POST api/<CostumerController>
         [HttpPost]
         public void Post([FromBody] Costumer value)
         {
-            costumers.Add(new Costumer(costumers.Count+1, value.FirstName, value.LastName, value.Address,
-                value.PhoneNumber, value.Email, value.Whatsapp));
+            costumers.Add(new Costumer()
+            {
+                Id = id++,
+                FirstName = value.FirstName,
+                LastName = value.LastName,
+                Address = value.Address,
+                PhoneNumber = value.PhoneNumber,
+                Email = value.Email,
+                Whatsapp = value.Whatsapp
+            });
         }
 
         // PUT api/<CostumerController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Costumer value)
+        public ActionResult Put(int id, [FromBody] Costumer value)
         {
             Costumer temp = costumers.Find(c => c.Id == id);
             if (temp != null)
@@ -61,8 +69,10 @@ namespace LowyersOffice.Controllers
                 temp.PhoneNumber = value.PhoneNumber;
                 temp.Email = value.Email;
                 temp.Whatsapp = value.Whatsapp;
+                return Ok();
             }
-
+            else
+                return NotFound();
         }
     }
 }

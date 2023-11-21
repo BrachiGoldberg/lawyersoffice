@@ -16,21 +16,7 @@
 
         public string Whatsapp { get; set; }
 
-        public Costumer(int id, string firstName, string lastName, string address,
-            string phone, string email, string whatsapp)
-        {
-            this.Id = id;
-            this.FirstName=firstName;
-            this.LastName=lastName;
-            this.Address=address;
-            this.PhoneNumber=phone;
-            this.Email=email;
-            this.Whatsapp = whatsapp;
-        }
-        public Costumer()
-        {
+        public List<CourtCase> CourtCases { get; set; }
 
-        }
-       
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace LowyersOffice.Entities
+﻿using LowyersOffice.Controllers;
+
+namespace LowyersOffice.Entities
 {
     
     public enum CourtCaseType { FAMILY, TAXES, ADMINISTRATIVELAW, REALESTATE, WORKING}
@@ -20,7 +22,7 @@
 
     public class CourtCase
     {
-
+        /* באיזה צורה כדאי שההכלה תתבצע: רשימה במחלקהת, או מאפיין */
         public int Code { get; set; }
 
         public CourtCaseType CourtType { get; set; }
@@ -37,19 +39,6 @@
 
         public int AmountToPay { get; set; }
 
-        public CourtCase(int code, CourtCaseType courtType, int fees,DateTime openingDate, CourtStatus courtCaseStatus, CostumerStatus costumerStatusOnCourt, int amountToPay)
-        {
-            Code = code;
-            CourtType = courtType;
-            Fees = fees;
-            OpeningDate = openingDate;
-            CourtCaseStatus = courtCaseStatus;
-            CostumerStatusOnCourt = costumerStatusOnCourt;
-            AmountToPay = amountToPay;
-        }
-        public CourtCase()
-        {
-
-        }
+        public List<Income> Incomes{ get; set; }
     }
 }

@@ -8,15 +8,16 @@ namespace LowyersOffice.Controllers
 {
     [Route("lawyer.co.il/[controller]")]
     [ApiController]
-    public class IncomesController : ControllerBase
+    public class IncomeController : ControllerBase
     {
+        static int id = 1;
         static List<Income> incomes;
-        static IncomesController()
+        static IncomeController()
         {
             incomes = new List<Income>();
-            incomes.Add(new Income { Code = 1, Sum = 1500, Date = new DateTime(2023, 11, 12), PaymentBy = PaymentMethod.CASH });
-            incomes.Add(new Income { Code = 2, Sum = 1000, Date = new DateTime(2023, 8, 30), PaymentBy = PaymentMethod.BANKTRANSFER });
-            incomes.Add(new Income { Code = 3, Sum = 2000, Date = new DateTime(2023, 10, 20), PaymentBy = PaymentMethod.BANKTRANSFER });
+            incomes.Add(new Income { Code = id++, Sum = 1500, Date = new DateTime(2023, 11, 12), PaymentBy = PaymentMethod.CASH });
+            incomes.Add(new Income { Code = id++, Sum = 1000, Date = new DateTime(2023, 8, 30), PaymentBy = PaymentMethod.BANKTRANSFER });
+            incomes.Add(new Income { Code = id++, Sum = 2000, Date = new DateTime(2023, 10, 20), PaymentBy = PaymentMethod.BANKTRANSFER });
         }
         // GET: api/<IncomesController>
         [HttpGet]
@@ -24,31 +25,29 @@ namespace LowyersOffice.Controllers
         {
             return incomes;
         }
-
+        
         // GET api/<IncomesController>/5
         [HttpGet("{id}")]
-        public Income Get(int id)
+        public ActionResult Get(int id)
         {
-            return incomes.Find(i => i.Code == id);
+            var income=incomes.Find(i => i.Code == id);
+            if (income == null)
+                return NotFound();
+            return Ok(income);
         }
 
-        [HttpGet("bydate/{date}")]
-        public IEnumerator<Income> Get(DateTime date)
-        {
-            return incomes.Where(i=>i.Date.Equals(date)).GetEnumerator();
-        }
 
         // POST api/<IncomesController>
         [HttpPost]
         public void Post([FromBody] Income value)
         {
             incomes.Add(new Income()
-            { Code = incomes.Count + 1, Date = new DateTime(), PaymentBy = value.PaymentBy, Sum = value.Sum });
+            { Code = id++, Date = new DateTime(), PaymentBy = value.PaymentBy, Sum = value.Sum });
         }
 
         // PUT api/<IncomesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Income value)
+        public ActionResult Put(int id, [FromBody] Income value)
         {
             var income = incomes.Find(i => i.Code == id);
             if (income != null)
@@ -56,8 +55,24 @@ namespace LowyersOffice.Controllers
                 income.Sum = value.Sum;
                 income.Date= value.Date;
                 income.PaymentBy = value.PaymentBy;
+                return Ok();
             }
+            return NotFound();
         }
+
+
+        [HttpPut("{id}/sum")]
+        public ActionResult Put(int id, int sum)
+        {
+            var income = incomes.Find(i => i.Code == id);
+            if (income != null)
+            {
+                income.Sum = sum;
+                return Ok();
+            }
+            return NotFound();
+        }
+
 
         // DELETE api/<IncomesController>/5
         [HttpDelete("{id}")]
