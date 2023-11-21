@@ -8,7 +8,7 @@
 # > ישויות
 1. לקוח
 2. תיק
-3. כספים - הכנסות
+3. כספים - הכנסות - תקבול מלקוחות
 
 # > מיפויים
 
@@ -20,9 +20,6 @@
  - שליפת לקוח לפי מזהה           
  GET http://lawyer.co.il/costumers/1    
  
- - שליפת לקוח לפי שם משפחה
- GET http://lawyer.co.il/costumers/byname/lastName  
- 
  -  הוספת לקוח
  POST http://lawyer.co.il/costumers  
  
@@ -31,14 +28,14 @@
 
 ## מיפוי תיק
 
- -   שליפת כל התיקים
+ - שליפת כל התיקים
  GET http://lawyer.co.il/courtcase
 
  - שליפת תיק לפי מזהה
  GET http://lawyer.co.il/courtcase/1 
  
- - שליפת תיק לפי סוג תיק
- GET http://lawyer.co.il/courtcase/courttype/type 
+ - שליפת תיקים מתאריך מסוים
+ GET http://lawyer.co.il/courtcase/?date=21/11/2023
  
  - הוספת תיק
  POST http://lawyer.co.il/courtcase 
@@ -50,7 +47,7 @@
 PUT http://lawyer.co.il/courtcase/1/status
  
 
-## מיפוי כספים - הכנסות
+## מיפוי כספים - הכנסות - תקבול מלקוחות
 
  - שליפת כל ההכנסות
  GET http://lawyer.co.il/incomes
@@ -58,8 +55,8 @@ PUT http://lawyer.co.il/courtcase/1/status
  - שליפת הכנסה לפי מזהה
  GET http://lawyer.co.il/incomes/1
  
- - שליפת הכנסה לפי תאריך
- GET http://lawyer.co.il/incomes/bydate/20.11.2023
+ - עידכון סכום הכנסה 
+ GET http://lawyer.co.il/incomes/1/sum/?sum=1000
  
  - הוספת הכנסה
  POST http://lawyer.co.il/incomes
