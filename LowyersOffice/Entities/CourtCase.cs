@@ -3,7 +3,7 @@
 namespace LowyersOffice.Entities
 {
     
-    public enum CourtCaseType { FAMILY, TAXES, ADMINISTRATIVELAW, REALESTATE, WORKING}
+    public enum CourtCaseType { FAMILY=1, TAXES, ADMINISTRATIVELAW, REALESTATE, WORKING}
     /*
      FAMILY : משפחה
      TAXES: מיסים
@@ -12,9 +12,9 @@ namespace LowyersOffice.Entities
      WORKING: עבודה
      */
 
-    public enum CourtStatus { ACTIVE, POSIVE}
+    public enum CourtStatus { ACTIVE = 1, POSIVE}
     
-    public enum CostumerStatus { PROSECUTOR, DEFENDANT}
+    public enum CostumerStatus { PROSECUTOR = 1, DEFENDANT}
     /*
      PROSECUTOR: תובע
      DEFENDANT: נתבע
@@ -39,6 +39,8 @@ namespace LowyersOffice.Entities
 
         public int AmountToPay { get; set; }
 
-        public List<Income> Incomes{ get; set; }
+        //public int IncomeId{ get; set; }
+
+        public int CostumerId { get; set; }
     }
 }

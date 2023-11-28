@@ -16,7 +16,7 @@
 
         public string Whatsapp { get; set; }
 
-        public List<CourtCase> CourtCases { get; set; }
+        //public int CourtCaseId { get; set; }
 
     }
 }

@@ -10,27 +10,25 @@ namespace LowyersOffice.Controllers
     [ApiController]
     public class IncomeController : ControllerBase
     {
-        static int id = 1;
-        static List<Income> incomes;
-        static IncomeController()
+        private readonly DataContext _data;
+        public IncomeController(DataContext data)
         {
-            incomes = new List<Income>();
-            incomes.Add(new Income { Code = id++, Sum = 1500, Date = new DateTime(2023, 11, 12), PaymentBy = PaymentMethod.CASH });
-            incomes.Add(new Income { Code = id++, Sum = 1000, Date = new DateTime(2023, 8, 30), PaymentBy = PaymentMethod.BANKTRANSFER });
-            incomes.Add(new Income { Code = id++, Sum = 2000, Date = new DateTime(2023, 10, 20), PaymentBy = PaymentMethod.BANKTRANSFER });
+            _data = data;
         }
+
+        static int id = 4;
         // GET: api/<IncomesController>
         [HttpGet]
         public IEnumerable<Income> Get()
         {
-            return incomes;
+            return _data.Incomes;
         }
         
         // GET api/<IncomesController>/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            var income=incomes.Find(i => i.Code == id);
+            var income= _data.Incomes.Find(i => i.Code == id);
             if (income == null)
                 return NotFound();
             return Ok(income);
@@ -41,7 +39,7 @@ namespace LowyersOffice.Controllers
         [HttpPost]
         public void Post([FromBody] Income value)
         {
-            incomes.Add(new Income()
+            _data.Incomes.Add(new Income()
             { Code = id++, Date = new DateTime(), PaymentBy = value.PaymentBy, Sum = value.Sum });
         }
 
@@ -49,7 +47,7 @@ namespace LowyersOffice.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Income value)
         {
-            var income = incomes.Find(i => i.Code == id);
+            var income = _data.Incomes.Find(i => i.Code == id);
             if (income != null)
             {
                 income.Sum = value.Sum;
@@ -64,7 +62,7 @@ namespace LowyersOffice.Controllers
         [HttpPut("{id}/sum")]
         public ActionResult Put(int id, int sum)
         {
-            var income = incomes.Find(i => i.Code == id);
+            var income = _data.Incomes.Find(i => i.Code == id);
             if (income != null)
             {
                 income.Sum = sum;
@@ -78,9 +76,9 @@ namespace LowyersOffice.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var income = incomes.Find(i => i.Code == id);
+            var income = _data.Incomes.Find(i => i.Code == id);
             if (income != null)
-                incomes.Remove(income);
+                _data.Incomes.Remove(income);
         }
     }
 }

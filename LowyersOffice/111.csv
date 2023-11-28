@@ -1,0 +1,5 @@
+﻿Code,CourtType,OpeningDate,ClosingDate,CourtCaseStatus ,CostumerStatusOnCourt ,AmountToPay,CostumerId
+1,2,5000,"new DateTime(2023, 11, 20)",1,1,5000,2
+2,4,3000," new DateTime(2023, 11, 17)",1,1,3000,6
+3,2,6000,"new DateTime(2023, 10, 17)",1,2,4500,3
+4,3,8000,"new DateTime(2023, 8, 30)",1,1,5000,4

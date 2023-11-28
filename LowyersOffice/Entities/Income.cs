@@ -12,5 +12,6 @@
         public DateTime Date { get; set; }
 
         public PaymentMethod PaymentBy { get; set; }
+        public int CourtCaseId { get; set; }
     }
 }

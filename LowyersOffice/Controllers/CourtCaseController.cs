@@ -9,58 +9,19 @@ namespace LowyersOffice.Controllers
     [ApiController]
     public class CourtCaseController : ControllerBase
     {
-        static int id = 1;
-        static List<CourtCase> courtes;
-        static CourtCaseController()
+        private readonly DataContext _data;
+        public CourtCaseController(DataContext data)
         {
-            courtes = new List<CourtCase>();
-            courtes.Add(new CourtCase()
-            {
-                Code = id++,
-                CourtType = CourtCaseType.TAXES,
-                Fees = 5000,
-                OpeningDate = new DateTime(2023, 11, 20),
-                CourtCaseStatus = CourtStatus.ACTIVE,
-                CostumerStatusOnCourt = CostumerStatus.PROSECUTOR,
-                AmountToPay = 5000
-            });
-            courtes.Add(new CourtCase()
-            {
-                Code = id++,
-                CourtType = CourtCaseType.REALESTATE,
-                Fees = 3000,
-                OpeningDate = new DateTime(2023, 11, 17),
-                CourtCaseStatus = CourtStatus.ACTIVE,
-                CostumerStatusOnCourt = CostumerStatus.PROSECUTOR,
-                AmountToPay = 3000
-            });
-            courtes.Add(new CourtCase()
-            {
-                Code = id++,
-                CourtType = CourtCaseType.TAXES,
-                Fees = 6000,
-                OpeningDate = new DateTime(2023, 10, 17),
-                CourtCaseStatus = CourtStatus.ACTIVE,
-                CostumerStatusOnCourt = CostumerStatus.DEFENDANT,
-                AmountToPay = 4500
-            });
-            courtes.Add(new CourtCase()
-            {
-                Code = id++,
-                CourtType = CourtCaseType.ADMINISTRATIVELAW,
-                Fees = 8000,
-                OpeningDate = new DateTime(2023, 8, 30),
-                CourtCaseStatus = CourtStatus.ACTIVE,
-                CostumerStatusOnCourt = CostumerStatus.PROSECUTOR,
-                AmountToPay = 5000
-            });
+            _data = data;
         }
+
+        static int id = 5;
 
         // GET: api/<CourtCaseController>
         [HttpGet]
         public IEnumerable<CourtCase> Get()
         {
-            return courtes;
+            return _data.CourtCases;
         }
 
 
@@ -68,14 +29,14 @@ namespace LowyersOffice.Controllers
         [HttpGet("date")]
         public IEnumerable<CourtCase> Get(DateTime date )
         {
-            return courtes.Where(c=>c.OpeningDate.CompareTo(date)>=0);
+            return _data.CourtCases.Where(c=>c.OpeningDate.CompareTo(date)>=0);
         }
 
         // GET api/<CourtCaseController>/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            var court = courtes.Find(c => c.Code == id);
+            var court = _data.CourtCases.Find(c => c.Code == id);
             if(court == null)
                 return NotFound();
             return Ok(court);
@@ -86,7 +47,7 @@ namespace LowyersOffice.Controllers
         [HttpPost]
         public void Post([FromBody] CourtCase value)
         {
-            courtes.Add(new CourtCase()
+            _data.CourtCases.Add(new CourtCase()
             {
                 Code = id++,
                 CourtType = value.CourtType,
@@ -102,7 +63,7 @@ namespace LowyersOffice.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] CourtCase value)
         {
-            var court = courtes.Find(c => c.Code == id);
+            var court = _data.CourtCases.Find(c => c.Code == id);
             if (court != null)
             {
                 court.CourtType = value.CourtType;
@@ -119,7 +80,7 @@ namespace LowyersOffice.Controllers
         [HttpPut("{id}/status")]
         public ActionResult Put(int id, [FromBody] CourtStatus status)
         {
-            var found = courtes.Find(c => c.Code == id);
+            var found = _data.CourtCases.Find(c => c.Code == id);
             if (found != null)
             {
                 found.CourtCaseStatus = status;

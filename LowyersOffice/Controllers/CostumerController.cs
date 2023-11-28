@@ -9,30 +9,25 @@ namespace LowyersOffice.Controllers
     [ApiController]
     public class CostumerController : ControllerBase
     {
-        static int id = 1;
-        static List<Costumer> costumers;
-        static CostumerController()
+        private readonly DataContext _data;
+        public CostumerController(DataContext data)
         {
-            costumers = new List<Costumer>();
-            costumers.Add(new Costumer(){Id=id++, FirstName="Brachi",    LastName="Goldberg", Address="birinboim",      PhoneNumber="0583276404", Email="brachig404@gmail.com",  Whatsapp="0552783660"});
-            costumers.Add(new Costumer(){Id=id++, FirstName="Elchanan" , LastName="Catz",     Address="Yeoshoa",        PhoneNumber="0527620838", Email="ec1234@gmail.com",      Whatsapp="0583184640"});
-            costumers.Add(new Costumer(){Id=id++, FirstName="Moshe",     LastName="Mintch",   Address="Cahaneman",      PhoneNumber="03-6776402", Email="moshe100200@gmail.com", Whatsapp="0526777214"});
-            costumers.Add(new Costumer(){Id=id++, FirstName="Avital",    LastName="Grinblat", Address="DameskeEliezer", PhoneNumber="0533148998", Email="grina@gmail.com",       Whatsapp="0544685330"});
-            costumers.Add(new Costumer(){Id=id++, FirstName="Israsel",   LastName="Cohen",    Address="pardo",          PhoneNumber="0556488412", Email="i1c2@gmail.com",        Whatsapp="0556488412"});
-            costumers.Add(new Costumer(){Id=id++, FirstName = "Zipora", LastName = "Levi", Address = "BenGurion", PhoneNumber = "03-6545512", Email = "zipi@gmail.com", Whatsapp = "03-6545512" });
+            _data = data;
         }
+        static int id = 7;
+      
         // GET: api/<CostumerController>
         [HttpGet]
         public IEnumerable<Costumer> Get()
         {
-            return costumers;
+            return _data.Costumers;
         }
 
         // GET api/<CostumerController>/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            var c= costumers.Find(c => c.Id == id);
+            var c= _data.Costumers.Find(c => c.Id == id);
             if (c==null)
                 return NotFound();
             return Ok(c);
@@ -44,7 +39,7 @@ namespace LowyersOffice.Controllers
         [HttpPost]
         public void Post([FromBody] Costumer value)
         {
-            costumers.Add(new Costumer()
+            _data.Costumers.Add(new Costumer()
             {
                 Id = id++,
                 FirstName = value.FirstName,
@@ -60,7 +55,7 @@ namespace LowyersOffice.Controllers
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Costumer value)
         {
-            Costumer temp = costumers.Find(c => c.Id == id);
+            Costumer temp = _data.Costumers.Find(c => c.Id == id);
             if (temp != null)
             {
                 temp.FirstName = value.FirstName;
