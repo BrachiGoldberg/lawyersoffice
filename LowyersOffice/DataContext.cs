@@ -17,7 +17,12 @@ namespace LowyersOffice
 
         public DataContext()
         {
-          
+            using (var writer = new StreamWriter("output.csv"))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecords<Costumer>(new List<Costumer>());
+            }
+
             using (var reader = new StreamReader("costumers.csv"))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
