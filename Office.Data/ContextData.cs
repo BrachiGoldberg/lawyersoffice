@@ -1,15 +1,12 @@
-﻿using LowyersOffice.Entities;
-using System.Formats.Asn1;
+﻿using CsvHelper;
+using Office.Core.Entites;
 using System.Globalization;
-using System;
-using CsvHelper;
-using System.Diagnostics.Metrics;
 
-namespace LowyersOffice
+namespace Office.Data
 {
     public class DataContext
     {
-        public List<Costumer> Costumers{ get; set; }
+        public List<Costumer> Costumers { get; set; }
         public List<CourtCase> CourtCases { get; set; }
         public List<Income> Incomes { get; set; }
 
@@ -28,13 +25,13 @@ namespace LowyersOffice
             {
                 Costumers = csv.GetRecords<Costumer>().ToList();
             }
-            
+
             using (var reader = new StreamReader("courtcases.csv"))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 CourtCases = csv.GetRecords<CourtCase>().ToList();
             }
-            
+
             using (var reader = new StreamReader("incomes.csv"))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {

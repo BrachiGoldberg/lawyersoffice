@@ -1,10 +1,9 @@
-﻿namespace LowyersOffice.Entities
+﻿namespace Office.Core.Entites
 {
-
     public enum PaymentMethod { CASH, BANKTRANSFER, CHECK, }
+
     public class Income
     {
-
         public int Code { get; set; }
 
         public int Sum { get; set; }

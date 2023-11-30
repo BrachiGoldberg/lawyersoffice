@@ -1,6 +1,7 @@
-﻿using LowyersOffice.Entities;
-using Microsoft.AspNetCore.Cors.Infrastructure;
+﻿using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Office.Core.Entites;
+using Office.Core.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,10 +11,10 @@ namespace LowyersOffice.Controllers
     [ApiController]
     public class IncomeController : ControllerBase
     {
-        private readonly DataContext _data;
-        public IncomeController(DataContext data)
+        private readonly IIncomeService _service;
+        public IncomeController(IIncomeService service)
         {
-            _data = data;
+            _service = service;
         }
 
         static int id = 4;
@@ -21,14 +22,14 @@ namespace LowyersOffice.Controllers
         [HttpGet]
         public IEnumerable<Income> Get()
         {
-            return _data.Incomes;
+            return _service.Get();
         }
         
         // GET api/<IncomesController>/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            var income= _data.Incomes.Find(i => i.Code == id);
+            var income = _service.Get(id);
             if (income == null)
                 return NotFound();
             return Ok(income);
@@ -39,22 +40,16 @@ namespace LowyersOffice.Controllers
         [HttpPost]
         public void Post([FromBody] Income value)
         {
-            _data.Incomes.Add(new Income()
-            { Code = id++, Date = new DateTime(), PaymentBy = value.PaymentBy, Sum = value.Sum });
+            _service.Post(value);
         }
 
         // PUT api/<IncomesController>/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] Income value)
         {
-            var income = _data.Incomes.Find(i => i.Code == id);
+            var income = _service.Put(id, value);
             if (income != null)
-            {
-                income.Sum = value.Sum;
-                income.Date= value.Date;
-                income.PaymentBy = value.PaymentBy;
                 return Ok();
-            }
             return NotFound();
         }
 
@@ -62,23 +57,21 @@ namespace LowyersOffice.Controllers
         [HttpPut("{id}/sum")]
         public ActionResult Put(int id, int sum)
         {
-            var income = _data.Incomes.Find(i => i.Code == id);
+            var income = _service.Put(id, sum);
             if (income != null)
-            {
-                income.Sum = sum;
                 return Ok();
-            }
             return NotFound();
         }
 
 
         // DELETE api/<IncomesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            var income = _data.Incomes.Find(i => i.Code == id);
+            var income = _service.Delete(id);
             if (income != null)
-                _data.Incomes.Remove(income);
+                return Ok();
+            return NotFound();
         }
     }
 }

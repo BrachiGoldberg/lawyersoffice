@@ -1,5 +1,6 @@
-﻿using LowyersOffice.Entities;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Office.Core.Entites;
+using Office.Core.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,19 +10,17 @@ namespace LowyersOffice.Controllers
     [ApiController]
     public class CourtCaseController : ControllerBase
     {
-        private readonly DataContext _data;
-        public CourtCaseController(DataContext data)
+        private readonly ICourtCaseService _service;
+        public CourtCaseController(ICourtCaseService service)
         {
-            _data = data;
+            _service = service;
         }
-
-        static int id = 5;
 
         // GET: api/<CourtCaseController>
         [HttpGet]
         public IEnumerable<CourtCase> Get()
         {
-            return _data.CourtCases;
+            return _service.Get();
         }
 
 
@@ -29,14 +28,14 @@ namespace LowyersOffice.Controllers
         [HttpGet("date")]
         public IEnumerable<CourtCase> Get(DateTime date )
         {
-            return _data.CourtCases.Where(c=>c.OpeningDate.CompareTo(date)>=0);
+            return _service.Get(date);
         }
 
         // GET api/<CourtCaseController>/5
         [HttpGet("{id}")]
         public ActionResult Get(int id)
         {
-            var court = _data.CourtCases.Find(c => c.Code == id);
+            var court = _service.Get(id);
             if(court == null)
                 return NotFound();
             return Ok(court);
@@ -47,46 +46,27 @@ namespace LowyersOffice.Controllers
         [HttpPost]
         public void Post([FromBody] CourtCase value)
         {
-            _data.CourtCases.Add(new CourtCase()
-            {
-                Code = id++,
-                CourtType = value.CourtType,
-                Fees = value.Fees,
-                OpeningDate = new DateTime(),
-                CourtCaseStatus = value.CourtCaseStatus,
-                CostumerStatusOnCourt = value.CostumerStatusOnCourt,
-                AmountToPay = value.Fees
-            });
+            _service.Post(value);
         }
 
         // PUT api/<CourtCaseController>/5
         [HttpPut("{id}")]
         public ActionResult Put(int id, [FromBody] CourtCase value)
         {
-            var court = _data.CourtCases.Find(c => c.Code == id);
-            if (court != null)
-            {
-                court.CourtType = value.CourtType;
-                court.Fees = value.Fees;
-                court.CourtCaseStatus = value.CourtCaseStatus;
-                court.CostumerStatusOnCourt = value.CostumerStatusOnCourt;
-                court.AmountToPay = value.AmountToPay;
-                return Ok();
-            }
-            return NotFound();
+            var res = _service.Put(id, value);
+            if(res ==null)
+                return NotFound();
+            return Ok();
         }
 
 
         [HttpPut("{id}/status")]
         public ActionResult Put(int id, [FromBody] CourtStatus status)
         {
-            var found = _data.CourtCases.Find(c => c.Code == id);
-            if (found != null)
-            {
-                found.CourtCaseStatus = status;
-                return Ok();
-            }
-            return NotFound();
+            var res = _service.Put(id, status);
+            if (res == null)
+                return NotFound();
+            return Ok();
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using LowyersOffice.Controllers;
-
-namespace LowyersOffice.Entities
-{
-    
+﻿namespace Office.Core.Entites
+{    
     public enum CourtCaseType { FAMILY=1, TAXES, ADMINISTRATIVELAW, REALESTATE, WORKING}
     /*
      FAMILY : משפחה
