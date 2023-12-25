@@ -1,7 +1,11 @@
-﻿using Office.Core.Entites;
+﻿using CsvHelper;
+using CsvHelper.Configuration.Attributes;
+using Newtonsoft.Json.Linq;
+using Office.Core.Entites;
 using Office.Core.Repository;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,18 +16,24 @@ namespace Office.Data.Repository
     public class IncomesRepository : IIncomesRepository
     {
         private readonly DataContext _data;
-        private int _id;
+        static private int _id;
         public IncomesRepository(DataContext data)
         {
             _data = data;
-            _id = 4;
+            _id = _data.Incomes.Max<Income>(x=> x.Code) + 1;
         }
         public Income Delete(int id)
         {
+            var incomes = Get().ToList();
             var income = _data.Incomes.Find(i => i.Code == id);
             if (income != null)
             {
-                _data.Incomes.Remove(income);
+                var a = incomes.Remove(income);
+                using (var writer = new StreamWriter("incomes.csv"))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords<Income>(incomes);
+                }
                 return income;
             }
             return null;
@@ -41,19 +51,34 @@ namespace Office.Data.Repository
 
         public void Post(Income value)
         {
-            _data.Incomes.Add(new Income()
-            { Code = _id++, Date = new DateTime(), 
-                PaymentBy = value.PaymentBy, Sum = value.Sum });
+            using (var writer = new StreamWriter("incomes.csv", true))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                csv.WriteRecord<Income>(new Income()
+                {
+                    Code = _id++,
+                    Date = new DateTime(),
+                    PaymentBy = value.PaymentBy,
+                    Sum = value.Sum
+                });
+            }
         }
 
         public Income Put(int id, Income value)
         {
-            var income = _data.Incomes.Find(i => i.Code == id);
+            var incomes = Get();
+            var income = _data.Incomes.Find(c => c.Code == id);
             if (income != null)
             {
                 income.Sum = value.Sum;
                 income.Date = value.Date;
                 income.PaymentBy = value.PaymentBy;
+
+                using (var writer = new StreamWriter("incomes.csv"))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords<Income>(incomes);
+                }
                 return income;
             }
             return null;
@@ -65,9 +90,12 @@ namespace Office.Data.Repository
             if (income != null)
             {
                 income.Sum = sum;
-                return income;
+                return Put(id, income);
             }
             return null;
         }
+
+        
+
     }
 }

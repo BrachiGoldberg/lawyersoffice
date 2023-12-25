@@ -12,5 +12,12 @@
 
         public PaymentMethod PaymentBy { get; set; }
         public int CourtCaseId { get; set; }
+
+        public virtual bool Equals(Object? obj)
+        {
+            if(this.Code == ((Income)obj).Code)
+                return true;
+            return false;
+        }
     }
 }

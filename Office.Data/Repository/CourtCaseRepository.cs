@@ -1,7 +1,9 @@
-﻿using Office.Core.Entites;
+﻿using CsvHelper;
+using Office.Core.Entites;
 using Office.Core.Repository;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,11 +14,11 @@ namespace Office.Data.Repository
     public class CourtCaseRepository : ICourtCaseRepository
     {
         private readonly DataContext _data;
-        private int _id;
+        static private int _id;
         public CourtCaseRepository(DataContext data)
         {
             _data = data;
-            _id = 5;
+            _id = _data.CourtCases.Max<CourtCase>(x => x.Code) + 1;
         }
         public IEnumerable<CourtCase> Get()
         {
@@ -35,20 +37,25 @@ namespace Office.Data.Repository
 
         public void Post(CourtCase value)
         {
-            _data.CourtCases.Add(new CourtCase()
+            using (var writer = new StreamWriter("courtcases.csv", true))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
-                Code = _id++,
-                CourtType = value.CourtType,
-                Fees = value.Fees,
-                OpeningDate = new DateTime(),
-                CourtCaseStatus = value.CourtCaseStatus,
-                CostumerStatusOnCourt = value.CostumerStatusOnCourt,
-                AmountToPay = value.Fees
-            });
+                csv.WriteRecord<CourtCase>(new CourtCase()
+                {
+                    Code = _id++,
+                    CourtType = value.CourtType,
+                    Fees = value.Fees,
+                    OpeningDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
+                    CourtCaseStatus = value.CourtCaseStatus,
+                    CostumerStatusOnCourt = value.CostumerStatusOnCourt,
+                    AmountToPay = value.Fees
+                });
+            }
         }
 
         public CourtCase Put(int id, CourtCase value)
         {
+            var courts = Get();
             var court = _data.CourtCases.Find(c => c.Code == id);
             if (court != null)
             {
@@ -57,6 +64,12 @@ namespace Office.Data.Repository
                 court.CourtCaseStatus = value.CourtCaseStatus;
                 court.CostumerStatusOnCourt = value.CostumerStatusOnCourt;
                 court.AmountToPay = value.AmountToPay;
+
+                using (var writer = new StreamWriter("courtcases.csv"))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords<CourtCase>(courts);
+                }
                 return court;
             }
             return null;
@@ -68,7 +81,7 @@ namespace Office.Data.Repository
             if (found != null)
             {
                 found.CourtCaseStatus = status;
-                return found;
+                return Put(id, found);
             }
             return null;
         }

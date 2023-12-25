@@ -22,7 +22,7 @@ builder.Services.AddScoped<ICostumerService, CostumerService>();
 builder.Services.AddScoped<ICourtCaseService, CourtCaseService>();
 builder.Services.AddScoped<IIncomeService, IncomeService>();
 
-builder.Services.AddSingleton<DataContext>();
+builder.Services.AddScoped<DataContext>();
 
 var app = builder.Build();
 

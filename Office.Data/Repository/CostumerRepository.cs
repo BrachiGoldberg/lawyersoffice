@@ -1,17 +1,19 @@
 ﻿
+using CsvHelper;
 using Office.Core.Entites;
 using Office.Core.Repository;
+using System.Globalization;
 
 namespace Office.Data.Repository
 {
     public class CostumerRepository : ICostumerRepository
     {
         private readonly DataContext _data;
-        private int _id;
+        static private int _id;
         public CostumerRepository(DataContext data)
         {
             _data = data;
-            _id = 7;
+            _id = _data.Costumers.Max<Costumer>(x => x.Id) + 1;
         }
 
         public IEnumerable<Costumer> Get()
@@ -26,20 +28,25 @@ namespace Office.Data.Repository
 
         public void Post(Costumer value)
         {
-            _data.Costumers.Add(new Costumer()
+            using (var writer = new StreamWriter("costumers.csv", true))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
-                Id = _id++,
-                FirstName = value.FirstName,
-                LastName = value.LastName,
-                Address = value.Address,
-                PhoneNumber = value.PhoneNumber,
-                Email = value.Email,
-                Whatsapp = value.Whatsapp
-            });
+                csv.WriteRecord<Costumer>(new Costumer()
+                {
+                    Id = _id++,
+                    FirstName = value.FirstName,
+                    LastName = value.LastName,
+                    Address = value.Address,
+                    PhoneNumber = value.PhoneNumber,
+                    Email = value.Email,
+                    Whatsapp = value.Whatsapp
+                });
+            }
         }
 
         public Costumer Put(int id, Costumer value)
         {
+            var costumers = Get();
             Costumer temp = _data.Costumers.Find(c => c.Id == id);
             if (temp != null)
             {
@@ -49,9 +56,16 @@ namespace Office.Data.Repository
                 temp.PhoneNumber = value.PhoneNumber;
                 temp.Email = value.Email;
                 temp.Whatsapp = value.Whatsapp;
+
+                using (var writer = new StreamWriter("costumers.csv"))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords<Costumer>(costumers);
+                }
                 return temp;
             }
             return null;
         }
     }
 }
+
