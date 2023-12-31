@@ -20,20 +20,14 @@ namespace Office.Data.Repository
         public IncomesRepository(DataContext data)
         {
             _data = data;
-            _id = _data.Incomes.Max<Income>(x=> x.Code) + 1;
+            //  _id = _data.Incomes.Max<Income>(x=> x.Code) + 1;
         }
         public Income Delete(int id)
         {
-            var incomes = Get().ToList();
-            var income = _data.Incomes.Find(i => i.Code == id);
+            var income = _data.Incomes.Find(id);
             if (income != null)
             {
-                var a = incomes.Remove(income);
-                using (var writer = new StreamWriter("incomes.csv"))
-                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-                {
-                    csv.WriteRecords<Income>(incomes);
-                }
+                _data.Incomes.Remove(income);
                 return income;
             }
             return null;
@@ -46,39 +40,29 @@ namespace Office.Data.Repository
 
         public Income Get(int id)
         {
-            return _data.Incomes.Find(i => i.Code == id);
+            return _data.Incomes.Find(id);
         }
 
         public void Post(Income value)
         {
-            using (var writer = new StreamWriter("incomes.csv", true))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            _data.Incomes.Add(new Income()
             {
-                csv.WriteRecord<Income>(new Income()
-                {
-                    Code = _id++,
-                    Date = new DateTime(),
-                    PaymentBy = value.PaymentBy,
-                    Sum = value.Sum
-                });
-            }
+            //    Code = _id++,
+                Date = new DateTime(),
+                PaymentBy = value.PaymentBy,
+                Sum = value.Sum
+            });
+
         }
 
         public Income Put(int id, Income value)
         {
-            var incomes = Get();
-            var income = _data.Incomes.Find(c => c.Code == id);
+            var income = _data.Incomes.Find(id);
             if (income != null)
             {
                 income.Sum = value.Sum;
                 income.Date = value.Date;
                 income.PaymentBy = value.PaymentBy;
-
-                using (var writer = new StreamWriter("incomes.csv"))
-                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-                {
-                    csv.WriteRecords<Income>(incomes);
-                }
                 return income;
             }
             return null;
@@ -86,16 +70,16 @@ namespace Office.Data.Repository
 
         public Income Put(int id, int sum)
         {
-            var income = _data.Incomes.Find(i => i.Code == id);
+            var income = _data.Incomes.Find( id);
             if (income != null)
             {
                 income.Sum = sum;
-                return Put(id, income);
+                return income;
             }
             return null;
         }
 
-        
+
 
     }
 }

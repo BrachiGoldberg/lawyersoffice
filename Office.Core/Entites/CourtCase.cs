@@ -20,7 +20,7 @@
     public class CourtCase
     {
         /* באיזה צורה כדאי שההכלה תתבצע: רשימה במחלקהת, או מאפיין */
-        public int Code { get; set; }
+        public int Id { get; set; }
 
         public CourtCaseType CourtType { get; set; }
 

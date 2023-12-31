@@ -13,7 +13,7 @@ namespace Office.Data.Repository
         public CostumerRepository(DataContext data)
         {
             _data = data;
-            _id = _data.Costumers.Max<Costumer>(x => x.Id) + 1;
+          //  _id = _data.Costumers.Max<Costumer>(x => x.Id) + 1;
         }
 
         public IEnumerable<Costumer> Get()
@@ -23,31 +23,28 @@ namespace Office.Data.Repository
 
         public Costumer Get(int id)
         {
-            return _data.Costumers.Find(c => c.Id == id);
+            return _data.Costumers.Find(id);
         }
 
         public void Post(Costumer value)
         {
-            using (var writer = new StreamWriter("costumers.csv", true))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            _data.Costumers.Add(new Costumer()
             {
-                csv.WriteRecord<Costumer>(new Costumer()
-                {
-                    Id = _id++,
-                    FirstName = value.FirstName,
-                    LastName = value.LastName,
-                    Address = value.Address,
-                    PhoneNumber = value.PhoneNumber,
-                    Email = value.Email,
-                    Whatsapp = value.Whatsapp
-                });
-            }
+              //  Id = _id++,
+                FirstName = value.FirstName,
+                LastName = value.LastName,
+                Address = value.Address,
+                PhoneNumber = value.PhoneNumber,
+                Email = value.Email,
+                Whatsapp = value.Whatsapp
+            });
         }
+
+
 
         public Costumer Put(int id, Costumer value)
         {
-            var costumers = Get();
-            Costumer temp = _data.Costumers.Find(c => c.Id == id);
+            Costumer temp = _data.Costumers.Find(id);
             if (temp != null)
             {
                 temp.FirstName = value.FirstName;
@@ -57,11 +54,6 @@ namespace Office.Data.Repository
                 temp.Email = value.Email;
                 temp.Whatsapp = value.Whatsapp;
 
-                using (var writer = new StreamWriter("costumers.csv"))
-                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-                {
-                    csv.WriteRecords<Costumer>(costumers);
-                }
                 return temp;
             }
             return null;

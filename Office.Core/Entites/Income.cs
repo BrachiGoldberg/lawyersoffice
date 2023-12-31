@@ -4,7 +4,7 @@
 
     public class Income
     {
-        public int Code { get; set; }
+        public int Id { get; set; }
 
         public int Sum { get; set; }
 
@@ -15,7 +15,7 @@
 
         public virtual bool Equals(Object? obj)
         {
-            if(this.Code == ((Income)obj).Code)
+            if(this.Id == ((Income)obj).Id)
                 return true;
             return false;
         }
